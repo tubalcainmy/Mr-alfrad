@@ -71,7 +71,7 @@
       // });
       // if (!response.ok) throw new Error("Request failed");
 
-      window.location.href = "thank-you.html";
+      window.location.href = "thankyou.html";
     } catch (err) {
       submitBtn.disabled = false;
       submitBtn.textContent = "Submit & Get My Secure Link";

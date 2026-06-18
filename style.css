@@ -42,6 +42,65 @@ img {
   padding: 0 20px;
 }
 
+/* Promo / discount banner */
+.promo-bar {
+  background: linear-gradient(90deg, #e0852b, #d6651f);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+
+.promo-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+.promo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.promo-headline {
+  font-size: 14px;
+  letter-spacing: 0.2px;
+}
+
+.promo-subtext {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.promo-countdown {
+  font-size: 13px;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.18);
+  padding: 6px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.promo-cta {
+  background: #fff;
+  color: #d6651f;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.promo-cta:hover {
+  background: #fff7f0;
+}
+
 /* Header */
 .site-header {
   background: var(--cea-navy);
@@ -49,6 +108,10 @@ img {
   top: 0;
   z-index: 50;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.has-promo-banner .site-header {
+  top: 0;
 }
 
 .site-header .container {
@@ -399,6 +462,126 @@ img {
   margin-top: 4px;
 }
 
+/* Security / trust section */
+.security-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.security-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 26px 22px;
+}
+
+.security-card .icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(31, 157, 85, 0.1);
+  color: var(--cea-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.security-card h3 {
+  font-size: 15.5px;
+  margin: 0 0 8px;
+}
+
+.security-card p {
+  font-size: 13.5px;
+  color: var(--cea-muted);
+  margin: 0;
+}
+
+/* Partner / verification strip */
+.partner-strip {
+  background: #fff;
+  border-top: 1px solid #e8ebf0;
+  border-bottom: 1px solid #e8ebf0;
+  padding: 28px 0;
+}
+
+.partner-strip .partner-label {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--cea-muted);
+  margin-bottom: 18px;
+}
+
+.partner-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.partner-chip {
+  background: var(--cea-bg);
+  border: 1px solid #e3e7ed;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2b3340;
+}
+
+/* Testimonials */
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.testimonial-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  border-left: 3px solid var(--cea-green);
+}
+
+.testimonial-card p.quote {
+  font-size: 13.5px;
+  color: var(--cea-text);
+  margin: 0 0 14px;
+  font-style: italic;
+}
+
+.testimonial-card .author {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cea-navy);
+}
+
+.testimonial-card .author span {
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--cea-muted);
+}
+
+.testimonial-placeholder {
+  grid-column: 1 / -1;
+  text-align: center;
+  background: #fff;
+  border: 1.5px dashed #d8dde6;
+  border-radius: var(--radius);
+  padding: 32px;
+  color: var(--cea-muted);
+  font-size: 13.5px;
+}
+
 /* CTA band */
 .cta-band {
   background: var(--cea-navy);
@@ -534,6 +717,10 @@ img {
   .trust-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .security-grid,
+  .testimonial-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 640px) {
@@ -551,5 +738,13 @@ img {
   }
   .lead-card {
     padding: 24px;
+  }
+  .security-grid,
+  .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+  .promo-bar-inner {
+    flex-direction: column;
+    gap: 8px;
   }
 }
