@@ -63,13 +63,17 @@
     statusEl.textContent = "";
 
     try {
-      // TODO: replace with the live lead-capture API endpoint when available.
-      // const response = await fetch("/api/leads/property-owner", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(payload),
-      // });
-      // if (!response.ok) throw new Error("Request failed");
+      // Formspree endpoint — replace FORMSPREE_FORM_ID with the real form ID
+      // from your Formspree account (form notifications go to info@ceagroup.org).
+      const response = await fetch("https://formspree.io/f/FORMSPREE_FORM_ID", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error("Request failed");
 
       window.location.href = "thankyou.html";
     } catch (err) {

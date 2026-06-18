@@ -22,11 +22,15 @@
       </span>
     </a>
     <nav class="site-nav">
-      <div class="nav-links" style="display:flex; gap:28px;">
+      <div class="nav-links" id="navLinks">
         <a href="index.html#how-it-works">How It Works</a>
         <a href="index.html#trust">Why CEA</a>
+        <a href="index.html#faq">FAQ</a>
+        <a href="index.html#lead-form" class="nav-cta">List Your Property</a>
       </div>
-      <a href="index.html#lead-form" class="nav-cta">List Your Property</a>
+      <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
     </nav>
   </div>
 </header>
@@ -217,6 +221,42 @@
     </div>
   </section>
 
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2>Common questions, answered</h2>
+        <p>Everything property owners ask us before listing.</p>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Does it cost anything to list my property?</summary>
+          <p>Standard listing fees apply once your property is verified and live. Watch for limited-time promotions where listing is free.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How long does verification take?</summary>
+          <p>Our team reviews title documents and confirms property details within 7 business days of receiving your full listing.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What documents will I need?</summary>
+          <p>You'll need your title documents and a valid NIN or BVN for identity verification. We'll guide you through exactly what's required once you receive your secure link.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is my information shared with anyone?</summary>
+          <p>No. CEA will never share your details without your consent. Your information is used only to verify and list your property.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How are buyer payments protected?</summary>
+          <p>Buyer funds are held in a CEA escrow account and only released to you once document transfer is confirmed.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What happens after I submit my details here?</summary>
+          <p>You'll receive a secure, tokenised link by email (valid 48–72 hours) to complete your full property listing and verification.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <section class="cta-band">
     <div class="container">
       <h2>Ready to list your property?</h2>
@@ -246,6 +286,7 @@
 
 <script src="promo-config.js"></script>
 <script src="promo-banner.js"></script>
+<script src="mobile-nav.js"></script>
 <script src="leadform.js"></script>
 </body>
 </html>

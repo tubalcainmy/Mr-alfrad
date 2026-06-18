@@ -158,6 +158,46 @@ img {
   gap: 28px;
 }
 
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-toggle.is-active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.is-active span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.is-active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 .site-nav a {
   color: #e7ebf3;
   text-decoration: none;
@@ -582,6 +622,51 @@ img {
   font-size: 13.5px;
 }
 
+/* FAQ */
+.faq-list {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.faq-item {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 22px;
+}
+
+.faq-item summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--cea-navy);
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  float: right;
+  font-weight: 700;
+  color: var(--cea-green);
+}
+
+.faq-item[open] summary::after {
+  content: "\2212";
+}
+
+.faq-item p {
+  margin: 12px 0 0;
+  font-size: 13.5px;
+  color: var(--cea-muted);
+}
+
 /* CTA band */
 .cta-band {
   background: var(--cea-navy);
@@ -724,8 +809,33 @@ img {
 }
 
 @media (max-width: 640px) {
-  .site-nav .nav-links {
+  .nav-toggle {
+    display: flex;
+  }
+  .nav-links {
     display: none;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    background: var(--cea-navy);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+  }
+  .nav-links.is-open {
+    display: flex;
+  }
+  .nav-links a {
+    width: 100%;
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .nav-links a.nav-cta {
+    margin: 10px 20px;
+    width: calc(100% - 40px);
+    text-align: center;
   }
   .hero h1 {
     font-size: 28px;
