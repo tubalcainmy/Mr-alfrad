@@ -23,4 +23,16 @@ window.CEA_PROMO = {
   subtext: "List your property at zero cost before our standard listing fees apply.",
   ctaText: "Claim My Free Listing",
   ctaTarget: "#lead-form",
+
+  // Listing fee discount applied on the Stage 2 payment step, only while the
+  // promo window above is active (and enabled is true).
+  // discountType: "free" waives the fee entirely, "percent" applies discountValue% off.
+  discountType: "free",
+  discountValue: 100,
 };
+
+/**
+ * Standard (non-promo) listing fee, in Naira. Charged on the Stage 2 listing
+ * form via Paystack unless an active promo above sets it to free/discounted.
+ */
+window.CEA_LISTING_FEE_NAIRA = 20000;

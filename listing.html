@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Complete Your Listing | Castlerock Econetwork Africa (CEA)</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="promoBanner"></div>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <img src="logo.svg" alt="CEA Logo" />
+      <span class="brand-name">
+        <strong>Castlerock Econetwork Africa</strong>
+        <span>Invest in Africa's Sustainable Future</span>
+      </span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html" class="nav-cta">Back to Home</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="confirm-wrap" id="loadingState">
+    <div class="confirm-card">
+      <p>Checking your secure link&hellip;</p>
+    </div>
+  </div>
+
+  <div class="confirm-wrap" id="expiredState" style="display:none;">
+    <div class="confirm-card">
+      <div class="confirm-icon" style="background:rgba(192,57,43,0.12); color:#c0392b;">&#33;</div>
+      <h1>This link has expired</h1>
+      <p>
+        Secure listing links are valid for a limited time. Please go back to the
+        homepage and submit your details again to receive a new link.
+      </p>
+      <p><a href="index.html#lead-form" class="btn-light" style="background:var(--cea-navy);">Back to Homepage</a></p>
+    </div>
+  </div>
+
+  <section class="section" id="listingFormSection" style="display:none;">
+    <div class="container" style="max-width:760px;">
+      <div class="section-head">
+        <span class="eyebrow">Stage 2 of 2</span>
+        <h2>Complete Your Property Listing</h2>
+        <p>This information is reviewed by our verification team before your listing goes live.</p>
+      </div>
+
+      <div class="lead-card">
+        <form id="listingForm" novalidate>
+          <div class="form-group" id="group-propertyType">
+            <label for="propertyType">Property Type</label>
+            <select id="propertyType" name="propertyType">
+              <option value="">Select property type</option>
+              <option value="land">Land</option>
+              <option value="residential">Residential</option>
+              <option value="commercial">Commercial</option>
+            </select>
+            <span class="error-msg">Please select a property type.</span>
+          </div>
+
+          <div class="form-group" id="group-address">
+            <label for="address">Property Address</label>
+            <input type="text" id="address" name="address" placeholder="Street, area, city, state" />
+            <span class="error-msg">Please enter the property address.</span>
+          </div>
+
+          <div class="form-group" id="group-price">
+            <label for="price">Asking Price (NGN)</label>
+            <input type="number" id="price" name="price" min="0" placeholder="e.g. 25000000" />
+            <span class="error-msg">Please enter a valid price.</span>
+          </div>
+
+          <div class="form-group" id="group-description">
+            <label for="description">Property Description</label>
+            <textarea id="description" name="description" rows="4" placeholder="Describe the property — size, features, condition, etc."></textarea>
+            <span class="error-msg">Please add a short description.</span>
+          </div>
+
+          <div class="form-group" id="group-email">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="e.g. you@example.com" />
+            <span class="error-msg">Please enter a valid email address.</span>
+          </div>
+
+          <div class="form-group" id="group-firstName">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" placeholder="As it appears on your NIN/BVN" />
+            <span class="error-msg">Please enter your first name.</span>
+          </div>
+
+          <div class="form-group" id="group-lastName">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" placeholder="As it appears on your NIN/BVN" />
+            <span class="error-msg">Please enter your last name.</span>
+          </div>
+
+          <div class="form-group" id="group-dob">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" />
+            <span class="error-msg">Please enter your date of birth.</span>
+          </div>
+
+          <div class="form-group" id="group-nin">
+            <label for="nin">NIN (National Identification Number)</label>
+            <input type="text" id="nin" name="nin" placeholder="11-digit NIN" />
+            <span class="error-msg">Please enter a valid 11-digit NIN.</span>
+          </div>
+
+          <div class="form-group" id="group-bvn">
+            <label for="bvn">BVN (Bank Verification Number)</label>
+            <input type="text" id="bvn" name="bvn" placeholder="11-digit BVN" />
+            <span class="error-msg">Please enter a valid 11-digit BVN.</span>
+          </div>
+
+          <button type="button" class="btn-submit" id="verifyIdentityBtn" style="background:var(--cea-navy);">Verify My Identity</button>
+          <div class="form-status" id="identityStatus"></div>
+
+          <div class="form-group" id="group-titleDocument">
+            <label for="titleDocument">Title Document (PDF or image)</label>
+            <input type="file" id="titleDocument" name="titleDocument" accept=".pdf,image/*" />
+            <span class="error-msg">Please upload your title document.</span>
+          </div>
+
+          <div class="form-group" id="group-propertyPhotos">
+            <label for="propertyPhotos">Property Photos</label>
+            <input type="file" id="propertyPhotos" name="propertyPhotos" accept="image/*" multiple />
+            <span class="error-msg">Please upload at least one photo.</span>
+          </div>
+
+          <div class="form-group" id="group-propertyVideo">
+            <label for="propertyVideo">Property Video (optional)</label>
+            <input type="file" id="propertyVideo" name="propertyVideo" accept="video/*" />
+          </div>
+
+          <div class="lead-card" id="paymentSummary" style="margin:0 0 20px; padding:20px; background:var(--cea-bg); box-shadow:none; border:1.5px solid #e3e7ed;">
+            <h3 style="margin:0 0 6px; font-size:15px;">Listing Fee</h3>
+            <p id="paymentAmountText" style="margin:0 0 14px; color:var(--cea-muted); font-size:13.5px;">Calculating fee&hellip;</p>
+            <button type="button" class="btn-submit" id="payBtn" disabled>Pay Listing Fee</button>
+            <div class="form-status" id="paymentStatus"></div>
+          </div>
+
+          <button type="submit" class="btn-submit" id="listingSubmitBtn" disabled>Submit Listing for Verification</button>
+          <p class="form-footnote" id="submitGateNote">Complete identity verification and payment above to enable submission.</p>
+
+          <div class="form-status" id="listingFormStatus"></div>
+
+          <p class="form-footnote">
+            By submitting, you confirm the information provided is accurate and that
+            you are the property owner or an authorised agent.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="logo.svg" alt="CEA Logo" />
+        <strong>Castlerock Econetwork Africa</strong>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:info@ceagroup.org">info@ceagroup.org</a>
+        <a href="https://www.ceagroup.org">www.ceagroup.org</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 Castlerock Econetwork Africa Ltd. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script src="promo-config.js"></script>
+<script src="promo-banner.js"></script>
+<script src="listing-form.js"></script>
+</body>
+</html>
