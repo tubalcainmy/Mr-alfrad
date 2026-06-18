@@ -63,14 +63,11 @@
     statusEl.textContent = "";
 
     try {
-      // Formspree endpoint — replace FORMSPREE_FORM_ID with the real form ID
-      // from your Formspree account (form notifications go to info@ceagroup.org).
-      const response = await fetch("https://formspree.io/f/FORMSPREE_FORM_ID", {
+      // Make.com webhook — replace with the real "Custom webhook" URL from your
+      // Make scenario (Webhook trigger -> Google Sheets row -> Email with secure link).
+      const response = await fetch("https://hook.us1.make.com/MAKE_WEBHOOK_ID", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
       if (!response.ok) throw new Error("Request failed");
