@@ -2,8 +2,8 @@
   // Replace with your deployed Cloudflare Worker URL.
   var WORKER_BASE_URL = "https://cea-listing-worker.YOUR-SUBDOMAIN.workers.dev";
 
-  // Replace with your live/test Paystack PUBLIC key (never the secret key).
-  var PAYSTACK_PUBLIC_KEY = "pk_test_REPLACE_ME";
+  // Replace with your live/test Flutterwave PUBLIC key (never the secret key).
+  var FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK_TEST-REPLACE_ME";
 
   var loadingState = document.getElementById("loadingState");
   var expiredState = document.getElementById("expiredState");
@@ -238,27 +238,42 @@
         return;
       }
 
-      if (typeof PaystackPop === "undefined") {
+      if (typeof FlutterwaveCheckout === "undefined") {
         paymentStatusEl.className = "form-status failure";
         paymentStatusEl.textContent = "Payment library failed to load. Please refresh and try again.";
         return;
       }
 
-      var handler = PaystackPop.setup({
-        key: PAYSTACK_PUBLIC_KEY,
-        email: payerEmail,
-        amount: feeNaira * 100, // kobo
+      var txRef = "CEA-" + Date.now();
+
+      FlutterwaveCheckout({
+        public_key: FLUTTERWAVE_PUBLIC_KEY,
+        tx_ref: txRef,
+        amount: feeNaira,
         currency: "NGN",
-        ref: "CEA-" + Date.now(),
+        payment_options: "card, banktransfer, ussd",
+        customer: {
+          email: payerEmail,
+          name: (fields.firstName.input.value.trim() + " " + fields.lastName.input.value.trim()).trim(),
+        },
+        customizations: {
+          title: "CEA Property Listing Fee",
+          description: "Listing fee for property submission",
+        },
         callback: function (response) {
-          paymentRef = response.reference;
+          if (response.status !== "successful") {
+            paymentStatusEl.className = "form-status failure";
+            paymentStatusEl.textContent = "Payment was not completed. Please try again.";
+            return;
+          }
+          paymentRef = String(response.transaction_id);
           paymentStatusEl.className = "form-status success";
-          paymentStatusEl.textContent = "Payment received. Reference: " + response.reference;
+          paymentStatusEl.textContent = "Payment received. Reference: " + txRef;
           payBtn.textContent = "Paid";
           payBtn.disabled = true;
           if (typeof gtag === "function") {
             gtag("event", "purchase", {
-              transaction_id: response.reference,
+              transaction_id: paymentRef,
               value: feeNaira,
               currency: "NGN",
             });
@@ -268,12 +283,13 @@
           }
           updateSubmitGate();
         },
-        onClose: function () {
-          paymentStatusEl.className = "form-status failure";
-          paymentStatusEl.textContent = "Payment window closed before completion.";
+        onclose: function () {
+          if (paymentRef === null) {
+            paymentStatusEl.className = "form-status failure";
+            paymentStatusEl.textContent = "Payment window closed before completion.";
+          }
         },
       });
-      handler.openIframe();
     });
   }
 
@@ -313,7 +329,7 @@
 
     var formData = new FormData(form);
     formData.append("token", token);
-    formData.append("paystackRef", paymentRef);
+    formData.append("flwTransactionId", paymentRef);
     formData.append("feePaidNaira", String(feeNaira));
 
     fetch(WORKER_BASE_URL + "/submit-listing", {
