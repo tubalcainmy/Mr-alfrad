@@ -1,6 +1,6 @@
 (function () {
   // Replace with your deployed Cloudflare Worker URL.
-  var WORKER_BASE_URL = "https://cea-listing-worker.YOUR-SUBDOMAIN.workers.dev";
+  var WORKER_BASE_URL = "https://cea-listing-worker.ceafricaorg.workers.dev/";
 
   // Replace with your live/test Paystack PUBLIC key (never the secret key).
   var PAYSTACK_PUBLIC_KEY = "pk_test_REPLACE_ME";
