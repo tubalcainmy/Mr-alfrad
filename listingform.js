@@ -1,6 +1,6 @@
 (function () {
   // Replace with your deployed Cloudflare Worker URL.
-  var WORKER_BASE_URL = "https://cea-listing-worker.ceafricaorg.workers.dev/";
+  var WORKER_BASE_URL = "https://cea-listing-worker.YOUR-SUBDOMAIN.workers.dev";
 
   // Replace with your live/test Paystack PUBLIC key (never the secret key).
   var PAYSTACK_PUBLIC_KEY = "pk_test_REPLACE_ME";
@@ -97,15 +97,10 @@
       group: document.getElementById("group-dob"),
       validate: function (v) { return v.trim().length > 0; },
     },
-    nin: {
-      input: document.getElementById("nin"),
-      group: document.getElementById("group-nin"),
-      validate: function (v) { return /^\d{11}$/.test(v.trim()); },
-    },
-    bvn: {
-      input: document.getElementById("bvn"),
-      group: document.getElementById("group-bvn"),
-      validate: function (v) { return /^\d{11}$/.test(v.trim()); },
+    vnin: {
+      input: document.getElementById("vnin"),
+      group: document.getElementById("group-vnin"),
+      validate: function (v) { return v.trim().length >= 10; },
     },
     titleDocument: {
       input: document.getElementById("titleDocument"),
@@ -132,10 +127,10 @@
     });
   });
 
-  // --- Identity verification (NIN + BVN, both required to pass) ---
+  // --- Identity verification (Virtual NIN) ---
   var verifyIdentityBtn = document.getElementById("verifyIdentityBtn");
   var identityStatusEl = document.getElementById("identityStatus");
-  var identityFieldKeys = ["firstName", "lastName", "dob", "nin", "bvn"];
+  var identityFieldKeys = ["firstName", "lastName", "dob", "vnin"];
 
   verifyIdentityBtn.addEventListener("click", function () {
     var isValid = true;
@@ -161,8 +156,7 @@
       firstname: fields.firstName.input.value.trim(),
       lastname: fields.lastName.input.value.trim(),
       dob: fields.dob.input.value.trim(),
-      nin: fields.nin.input.value.trim(),
-      bvn: fields.bvn.input.value.trim(),
+      vnin: fields.vnin.input.value.trim(),
     };
 
     fetch(WORKER_BASE_URL + "/verify-identity", {
@@ -178,7 +172,13 @@
           verifyIdentityBtn.textContent = "Identity Verified";
           verifyIdentityBtn.disabled = true;
           identityStatusEl.className = "form-status success";
-          identityStatusEl.textContent = "Your identity has been verified against your NIN and BVN.";
+          identityStatusEl.textContent = "Your identity has been verified against your Virtual NIN.";
+          if (typeof gtag === "function") {
+            gtag("event", "identity_verified", { form: "stage2_listing_form" });
+          }
+          if (typeof fbq === "function") {
+            fbq("trackCustom", "IdentityVerified");
+          }
           updateSubmitGate();
         } else {
           verifyIdentityBtn.textContent = "Verify My Identity";
@@ -256,6 +256,16 @@
           paymentStatusEl.textContent = "Payment received. Reference: " + response.reference;
           payBtn.textContent = "Paid";
           payBtn.disabled = true;
+          if (typeof gtag === "function") {
+            gtag("event", "purchase", {
+              transaction_id: response.reference,
+              value: feeNaira,
+              currency: "NGN",
+            });
+          }
+          if (typeof fbq === "function") {
+            fbq("track", "Purchase", { value: feeNaira, currency: "NGN" });
+          }
           updateSubmitGate();
         },
         onClose: function () {
@@ -316,6 +326,12 @@
       })
       .then(function (data) {
         if (!data.ok) throw new Error(data.reason || "Submit failed");
+        if (typeof gtag === "function") {
+          gtag("event", "listing_submitted", { form: "stage2_listing_form" });
+        }
+        if (typeof fbq === "function") {
+          fbq("trackCustom", "ListingSubmitted");
+        }
         window.location.href = "thankyou.html";
       })
       .catch(function () {

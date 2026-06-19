@@ -72,6 +72,13 @@
       });
       if (!response.ok) throw new Error("Request failed");
 
+      if (typeof gtag === "function") {
+        gtag("event", "generate_lead", { form: "stage1_lead_form" });
+      }
+      if (typeof fbq === "function") {
+        fbq("track", "Lead");
+      }
+
       window.location.href = "thankyou.html";
     } catch (err) {
       submitBtn.disabled = false;

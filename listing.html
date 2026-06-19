@@ -4,8 +4,36 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Complete Your Listing | Castlerock Econetwork Africa (CEA)</title>
+<meta name="robots" content="noindex, nofollow" />
 <link rel="icon" href="logo.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="style.css" />
+
+<!-- Google tag (gtag.js) - replace G-XXXXXXXXXX with your real GA4 Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+<!-- Meta Pixel Code - replace YOUR_PIXEL_ID with your real Pixel ID -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'YOUR_PIXEL_ID');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
 
@@ -92,13 +120,13 @@
 
           <div class="form-group" id="group-firstName">
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" placeholder="As it appears on your NIN/BVN" />
+            <input type="text" id="firstName" name="firstName" placeholder="As it appears on your NIN" />
             <span class="error-msg">Please enter your first name.</span>
           </div>
 
           <div class="form-group" id="group-lastName">
             <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" placeholder="As it appears on your NIN/BVN" />
+            <input type="text" id="lastName" name="lastName" placeholder="As it appears on your NIN" />
             <span class="error-msg">Please enter your last name.</span>
           </div>
 
@@ -108,16 +136,22 @@
             <span class="error-msg">Please enter your date of birth.</span>
           </div>
 
-          <div class="form-group" id="group-nin">
-            <label for="nin">NIN (National Identification Number)</label>
-            <input type="text" id="nin" name="nin" placeholder="11-digit NIN" />
-            <span class="error-msg">Please enter a valid 11-digit NIN.</span>
-          </div>
-
-          <div class="form-group" id="group-bvn">
-            <label for="bvn">BVN (Bank Verification Number)</label>
-            <input type="text" id="bvn" name="bvn" placeholder="11-digit BVN" />
-            <span class="error-msg">Please enter a valid 11-digit BVN.</span>
+          <div class="form-group" id="group-vnin">
+            <label for="vnin">Virtual NIN (vNIN)</label>
+            <input type="text" id="vnin" name="vnin" placeholder="e.g. JZ426633988976CH" />
+            <span class="error-msg">Please enter your Virtual NIN.</span>
+            <details class="faq-item" style="margin-top:10px; box-shadow:none; border:1px solid #e3e7ed;">
+              <summary>Don't have a vNIN yet? Here's how to get one</summary>
+              <p>
+                A vNIN is a temporary, shareable version of your NIN that protects your actual
+                NIN number. You can generate one for free in under a minute:
+              </p>
+              <p><strong>Option A — NIMC Mobile App:</strong> Download the NIMC app &rarr;
+                tap "Get Virtual NIN" &rarr; choose "Input Enterprise short-code" &rarr;
+                enter <strong>715461</strong> &rarr; tap Submit. Your vNIN will be generated instantly.</p>
+              <p><strong>Option B — USSD (no app needed):</strong> Dial
+                <strong>*346*3*Your NIN*715461#</strong> and an SMS with your vNIN will be sent to you.</p>
+            </details>
           </div>
 
           <button type="button" class="btn-submit" id="verifyIdentityBtn" style="background:var(--cea-navy);">Verify My Identity</button>
