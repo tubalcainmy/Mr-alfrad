@@ -1,9 +1,9 @@
 (function () {
   // Replace with your deployed Cloudflare Worker URL.
-  var WORKER_BASE_URL = "https://cea-listing-worker.ceafricaorg.workers.dev/";
+  var WORKER_BASE_URL = "https://cea-listing-worker.YOUR-SUBDOMAIN.workers.dev";
 
   // Replace with your live/test Flutterwave PUBLIC key (never the secret key).
-  var FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK_TEST-a0fc74c6be11488a48e2c90ae540a4c3-X";
+  var FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK_TEST-REPLACE_ME";
 
   var loadingState = document.getElementById("loadingState");
   var expiredState = document.getElementById("expiredState");
@@ -66,6 +66,15 @@
       input: document.getElementById("address"),
       group: document.getElementById("group-address"),
       validate: function (v) { return v.trim().length >= 5; },
+    },
+    location: {
+      input: document.getElementById("latitude"),
+      group: document.getElementById("group-location"),
+      validate: function () {
+        var lat = document.getElementById("latitude").value;
+        var lng = document.getElementById("longitude").value;
+        return lat !== "" && lng !== "";
+      },
     },
     price: {
       input: document.getElementById("price"),
