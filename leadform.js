@@ -1,5 +1,5 @@
 (function () {
-  const form = document.getElementById("leadForm");
+  const form = document.getElementById("lead-form");
   if (!form) return;
 
   const submitBtn = document.getElementById("submitBtn");
