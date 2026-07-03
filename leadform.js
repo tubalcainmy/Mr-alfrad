@@ -65,7 +65,7 @@
     try {
       // Make.com webhook — replace with the real "Custom webhook" URL from your
       // Make scenario (Webhook trigger -> Google Sheets row -> Email with secure link).
-      const response = await fetch("https://hook.us1.make.com/MAKE_WEBHOOK_ID", {
+      const response = await fetch("https://hook.us2.make.com/2akjrtnypro4leowb59akyb7om6h2hla", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
