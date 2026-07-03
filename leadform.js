@@ -1,5 +1,5 @@
 (function () {
-  const form = document.getElementById("lead-form");
+  const form = document.getElementById("leadForm");
   if (!form) return;
 
   const submitBtn = document.getElementById("submitBtn");
@@ -63,8 +63,6 @@
     statusEl.textContent = "";
 
     try {
-      // Make.com webhook — replace with the real "Custom webhook" URL from your
-      // Make scenario (Webhook trigger -> Google Sheets row -> Email with secure link).
       const response = await fetch("https://hook.us2.make.com/2akjrtnypro4leowb59akyb7om6h2hla", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
