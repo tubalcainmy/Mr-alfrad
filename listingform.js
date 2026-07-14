@@ -193,8 +193,9 @@
           verifyIdentityBtn.textContent = "Verify My Identity";
           identityStatusEl.className = "form-status failure";
           identityStatusEl.textContent =
-            "We couldn't verify your identity (" + (data.reason || "no match") +
-            "). Please check your details and try again.";
+            "Verification failed — reason: " + (data.reason || "no match") +
+            (data.detail ? " | detail: " + data.detail : "") +
+            ". Please check your details and try again.";
         }
       })
       .catch(function () {
