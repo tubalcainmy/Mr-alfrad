@@ -358,7 +358,7 @@
         if (typeof fbq === "function") {
           fbq("trackCustom", "ListingSubmitted");
         }
-        window.location.href = "thankyou.html";
+        window.location.href = "listing-thankyou.html";
       })
       .catch(function () {
         submitBtn.disabled = false;
