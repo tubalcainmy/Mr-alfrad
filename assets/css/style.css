@@ -1040,6 +1040,10 @@ img {
   color: inherit;
   flex: 1;
 }
+.property-card-link *,
+.property-card-link *:hover {
+  text-decoration: none;
+}
 .property-card-link:hover .prop-address {
   color: var(--cea-green);
 }
@@ -1073,8 +1077,14 @@ img {
   padding: 12px 0;
   font-size: 14px;
   font-weight: 700;
+  font-family: inherit;
+  letter-spacing: 0.2px;
   cursor: pointer;
+  line-height: 1.4;
+  text-align: center;
+  display: block;
   transition: background 0.18s;
+  -webkit-appearance: none;
 }
 .book-tour-btn:hover {
   background: #1e9455;
