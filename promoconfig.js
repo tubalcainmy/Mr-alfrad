@@ -16,7 +16,7 @@ window.CEA_PROMO = {
 
   // Promotion window
   startDateTime: "2026-07-01T00:00:00+01:00",
-  endDateTime: "2026-07-20T23:59:59+01:00",
+  endDateTime: "2026-07-25T23:59:59+01:00",
 
   // Banner content
   headline: "Launch Offer: Free Property Listing",
