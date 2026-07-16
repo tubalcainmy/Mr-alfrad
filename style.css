@@ -1033,8 +1033,102 @@ img {
   overflow: hidden;
   flex: 1;
 }
+/* Property card — link wrapper */
+.property-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+}
+.property-card-link *,
+.property-card-link *:hover {
+  text-decoration: none;
+}
+.property-card-link:hover .prop-address {
+  color: var(--cea-green);
+}
+
+/* Photo placeholder when no image or image fails */
+.property-photo-wrap.no-photo {
+  background: linear-gradient(135deg, #e8ecf3 0%, #d4dce8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.property-photo-wrap.no-photo::after {
+  content: "🏠";
+  font-size: 52px;
+  opacity: 0.45;
+}
+
+/* Card footer: two actions side by side */
+.property-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 18px 18px;
+}
 .book-tour-btn {
-  margin-top: auto;
+  flex: 1;
+  background: var(--cea-green);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  line-height: 1.4;
+  text-align: center;
+  display: block;
+  transition: background 0.18s;
+  -webkit-appearance: none;
+}
+.book-tour-btn:hover {
+  background: #1e9455;
+}
+.view-details-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cea-navy);
+  text-decoration: none;
+  white-space: nowrap;
+  opacity: 0.75;
+  transition: opacity 0.15s;
+}
+.view-details-link:hover {
+  opacity: 1;
+  color: var(--cea-green);
+}
+
+/* Video section on detail page */
+.video-section {
+  margin-top: 36px;
+}
+.video-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--cea-navy);
+  margin: 0 0 12px;
+}
+.video-wrap {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #000;
+}
+.video-wrap iframe,
+.video-wrap video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 /* Skeleton shimmer */
