@@ -266,6 +266,19 @@
       .replace(/'/g, "&#39;");
   }
 
+  function showError(msg) {
+    var content = document.getElementById("detailContent");
+    if (content) {
+      content.innerHTML =
+        '<div class="no-results" style="padding:80px 20px;">' +
+          '<div class="no-results-icon">&#128683;</div>' +
+          '<h3>' + msg + '</h3>' +
+          '<p style="margin-bottom:20px;">The listing may have been removed or the link is incorrect.</p>' +
+          '<p><a href="properties.html" class="btn-submit" style="display:inline-block;width:auto;padding:12px 24px;text-decoration:none;">Browse all properties</a></p>' +
+        "</div>";
+    }
+  }
+
   function init() {
     var id = getQueryParam("id");
     if (!id) {
@@ -280,6 +293,29 @@
       }
       return;
     }
+
+    // Show error if loading takes more than 15 seconds
+    var loadTimeout = setTimeout(function () {
+      showError("This listing is taking too long to load");
+    }, 15000);
+
+    var originalFetch = fetchListing;
+    fetchListing = function (lid) {
+      fetch(WORKER_BASE_URL + "/listings/" + encodeURIComponent(lid))
+        .then(function (res) {
+          clearTimeout(loadTimeout);
+          if (!res.ok) throw new Error("Not found");
+          return res.json();
+        })
+        .then(function (listing) {
+          renderDetail(listing);
+        })
+        .catch(function () {
+          clearTimeout(loadTimeout);
+          showError("Property not found");
+        });
+    };
+
     fetchListing(id);
   }
 
