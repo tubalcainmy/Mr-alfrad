@@ -127,6 +127,31 @@
         '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:var(--cea-muted);font-size:14px;">Map coordinates not available for this listing.</div>';
     }
 
+    var videoHtml = "";
+    if (listing.videoUrl) {
+      var ytMatch = listing.videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+      if (ytMatch) {
+        videoHtml =
+          '<div class="video-section">' +
+            '<h3 class="video-section-title">Property Video</h3>' +
+            '<div class="video-wrap">' +
+              '<iframe src="https://www.youtube.com/embed/' + ytMatch[1] + '" loading="lazy" title="Property video" allowfullscreen frameborder="0"></iframe>' +
+            "</div>" +
+          "</div>";
+      } else {
+        videoHtml =
+          '<div class="video-section">' +
+            '<h3 class="video-section-title">Property Video</h3>' +
+            '<div class="video-wrap">' +
+              '<video controls style="width:100%;border-radius:var(--radius);">' +
+                '<source src="' + escHtml(listing.videoUrl) + '" />' +
+                'Your browser does not support video playback.' +
+              "</video>" +
+            "</div>" +
+          "</div>";
+      }
+    }
+
     var content = document.getElementById("detailContent");
     if (!content) return;
 
@@ -156,6 +181,7 @@
           "</div>" +
         "</div>" +
       "</div>" +
+      videoHtml +
       '<div class="map-section">' + mapHtml + "</div>";
 
     wireGallery(listing);
