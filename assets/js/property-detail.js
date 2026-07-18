@@ -40,11 +40,52 @@
     if (el) el.setAttribute("content", content);
   }
 
+  function buildBuyerJourney() {
+    return (
+      '<div id="buyerJourneyWrap" style="margin-top:20px;border-top:1px solid #e3e7ed;padding-top:14px;">' +
+        '<button type="button" id="buyerJourneyToggle" style="' +
+          'display:flex;align-items:center;justify-content:space-between;width:100%;' +
+          'background:none;border:none;padding:0;cursor:pointer;font-family:inherit;' +
+          'font-size:13px;font-weight:700;color:var(--cea-navy);text-align:left;' +
+        '">' +
+          '<span>How buying with CEA works</span>' +
+          '<span id="buyerJourneyChevron" style="font-size:11px;color:var(--cea-muted);transition:transform 0.2s;">&#9660;</span>' +
+        '</button>' +
+        '<div id="buyerJourneySteps" style="display:none;margin-top:14px;">' +
+          buildJourneyStep("1", "#2ecc71", "Book a Tour",
+            "Pick a date and time that works for you. A CEA representative will confirm your appointment by email.") +
+          buildJourneyStep("2", "#3498db", "Property Verification",
+            "Our team physically visits the property, verifies the title documents, boundaries, and confirms clear ownership.") +
+          buildJourneyStep("3", "#e67e22", "Agree &amp; Secure",
+            "Negotiate a price with CEA oversight. Sign a purchase agreement and pay a securing deposit to hold the property.") +
+          buildJourneyStep("4", "#1a2e4a", "Transfer &amp; Own",
+            "Complete all documentation and title transfer under CEA supervision. The property is legally yours.") +
+        "</div>" +
+      "</div>"
+    );
+  }
+
+  function buildJourneyStep(num, color, title, desc) {
+    return (
+      '<div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;">' +
+        '<div style="' +
+          'flex-shrink:0;width:28px;height:28px;border-radius:50%;' +
+          'background:' + color + ';color:#fff;' +
+          'display:flex;align-items:center;justify-content:center;' +
+          'font-size:12px;font-weight:800;' +
+        '">' + num + '</div>' +
+        '<div>' +
+          '<div style="font-size:13px;font-weight:700;color:var(--cea-navy);margin-bottom:2px;">' + title + '</div>' +
+          '<div style="font-size:12.5px;color:var(--cea-muted);line-height:1.5;">' + desc + '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
   function renderDetail(listing) {
     var pageTitle = (listing.address || "Property") + " | CEA Verified | Castlerock Econetwork Africa";
     document.title = pageTitle;
 
-    // Update meta tags dynamically for social sharing
     var desc = (listing.description || "").slice(0, 155);
     var img = (listing.photos && listing.photos[0]) ? listing.photos[0] : "https://tubalcainmy.github.io/Mr-alfrad/logo.jpg";
     setMeta("description", desc);
@@ -55,7 +96,6 @@
     setMeta("twitter:description", desc, "name");
     setMeta("twitter:image", img, "name");
 
-    // GA4 view_item event
     if (typeof gtag === "function") {
       gtag("event", "view_item", {
         item_id: listing.id,
@@ -66,7 +106,6 @@
         currency: "NGN"
       });
     }
-    // Meta Pixel ViewContent event
     if (typeof fbq === "function") {
       fbq("track", "ViewContent", {
         content_ids: [listing.id],
@@ -81,7 +120,7 @@
     currentPhotoIndex = 0;
 
     var priceFormatted = listing.price
-      ? "₦" + Number(listing.price).toLocaleString("en-NG")
+      ? "&#8358;" + Number(listing.price).toLocaleString("en-NG")
       : "Price on request";
 
     var listedDateFormatted = listing.listedDate ? formatDate(listing.listedDate) : "Recently listed";
@@ -172,12 +211,13 @@
               (listing.size
                 ? '<div class="detail-meta-item"><div class="label">Size</div><div class="value">' + escHtml(listing.size) + "</div></div>"
                 : "") +
-              '<div class="detail-meta-item"><div class="label">Type</div><div class="value">' + escHtml(listing.propertyType || "—") + "</div></div>" +
-              '<div class="detail-meta-item"><div class="label">Location</div><div class="value">' + escHtml(listing.location || "—") + "</div></div>" +
+              '<div class="detail-meta-item"><div class="label">Type</div><div class="value">' + escHtml(listing.propertyType || "&#8212;") + "</div></div>" +
+              '<div class="detail-meta-item"><div class="label">Location</div><div class="value">' + escHtml(listing.location || "&#8212;") + "</div></div>" +
               '<div class="detail-meta-item"><div class="label">Listed</div><div class="value">' + listedDateFormatted + "</div></div>" +
             "</div>" +
             '<button class="btn-submit book-tour-btn" data-listing-id="' + escHtml(listing.id || "") + '" data-address="' + escHtml(listing.address || "") + '" style="font-size:15px;padding:14px;">Book a Tour</button>' +
             '<button class="share-btn" id="shareBtn">&#128279; Share this listing</button>' +
+            buildBuyerJourney() +
           "</div>" +
         "</div>" +
       "</div>" +
@@ -187,6 +227,19 @@
     wireGallery(listing);
     wireShareBtn(listing);
     wireReadMore(listing);
+    wireBuyerJourney();
+  }
+
+  function wireBuyerJourney() {
+    var toggle = document.getElementById("buyerJourneyToggle");
+    var steps = document.getElementById("buyerJourneySteps");
+    var chevron = document.getElementById("buyerJourneyChevron");
+    if (!toggle || !steps) return;
+    toggle.addEventListener("click", function () {
+      var open = steps.style.display !== "none";
+      steps.style.display = open ? "none" : "block";
+      if (chevron) chevron.style.transform = open ? "" : "rotate(180deg)";
+    });
   }
 
   function wireGallery(listing) {
@@ -294,29 +347,23 @@
       return;
     }
 
-    // Show error if loading takes more than 15 seconds
     var loadTimeout = setTimeout(function () {
       showError("This listing is taking too long to load");
     }, 15000);
 
-    var originalFetch = fetchListing;
-    fetchListing = function (lid) {
-      fetch(WORKER_BASE_URL + "/listings/" + encodeURIComponent(lid))
-        .then(function (res) {
-          clearTimeout(loadTimeout);
-          if (!res.ok) throw new Error("Not found");
-          return res.json();
-        })
-        .then(function (listing) {
-          renderDetail(listing);
-        })
-        .catch(function () {
-          clearTimeout(loadTimeout);
-          showError("Property not found");
-        });
-    };
-
-    fetchListing(id);
+    fetch(WORKER_BASE_URL + "/listings/" + encodeURIComponent(id))
+      .then(function (res) {
+        clearTimeout(loadTimeout);
+        if (!res.ok) throw new Error("Not found");
+        return res.json();
+      })
+      .then(function (listing) {
+        renderDetail(listing);
+      })
+      .catch(function () {
+        clearTimeout(loadTimeout);
+        showError("Property not found");
+      });
   }
 
   if (document.readyState === "loading") {
