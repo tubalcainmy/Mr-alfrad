@@ -1,8 +1,5 @@
 (function () {
-  // Replace with your deployed Cloudflare Worker URL.
   var WORKER_BASE_URL = "https://cea-listing-worker.ceafricaorg.workers.dev";
-
-  // Replace with your live/test Flutterwave PUBLIC key (never the secret key).
   var FLUTTERWAVE_PUBLIC_KEY = "FLWPUBK_TEST-a0fc74c6be11488a48e2c90ae540a4c3-X";
 
   var loadingState = document.getElementById("loadingState");
@@ -47,8 +44,23 @@
   var statusEl = document.getElementById("listingFormStatus");
   var submitGateNote = document.getElementById("submitGateNote");
 
+  // Inject upload progress bar after the submit button
+  var progressWrap = document.createElement("div");
+  progressWrap.id = "uploadProgressWrap";
+  progressWrap.style.cssText = "display:none;margin:16px 0 8px;";
+  progressWrap.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+      '<span id="uploadProgressMsg" style="font-size:13px;font-weight:600;color:var(--cea-navy);">Uploading files&hellip;</span>' +
+      '<span id="uploadProgressPct" style="font-size:13px;font-weight:700;color:var(--cea-green);">0%</span>' +
+    '</div>' +
+    '<div style="background:#e3e7ed;border-radius:999px;height:10px;overflow:hidden;">' +
+      '<div id="uploadProgressBar" style="height:100%;width:0%;background:var(--cea-green);border-radius:999px;transition:width 0.2s ease;"></div>' +
+    '</div>' +
+    '<p style="margin:8px 0 0;font-size:12px;color:var(--cea-muted);">Please keep this page open until the upload is complete.</p>';
+  submitBtn.parentNode.insertBefore(progressWrap, submitBtn.nextSibling);
+
   var identityVerified = false;
-  var paymentRef = null; // null until paid, or "FREE" if no fee due
+  var paymentRef = null;
 
   function updateSubmitGate() {
     var ready = identityVerified && paymentRef !== null;
@@ -303,7 +315,7 @@
     });
   }
 
-  // --- Final submission (requires identity verified + payment complete) ---
+  // --- Final submission with XHR upload progress ---
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -333,38 +345,70 @@
     }
 
     submitBtn.disabled = true;
-    submitBtn.textContent = "Submitting...";
+    submitBtn.textContent = "Starting upload...";
     statusEl.className = "form-status";
     statusEl.textContent = "";
+
+    // Show progress bar
+    progressWrap.style.display = "block";
+    var progressBar = document.getElementById("uploadProgressBar");
+    var progressPct = document.getElementById("uploadProgressPct");
+    var progressMsg = document.getElementById("uploadProgressMsg");
 
     var formData = new FormData(form);
     formData.append("token", token);
     formData.append("flwTransactionId", paymentRef);
     formData.append("feePaidNaira", String(feeNaira));
 
-    fetch(WORKER_BASE_URL + "/submit-listing", {
-      method: "POST",
-      body: formData,
-    })
-      .then(function (res) {
-        if (!res.ok) throw new Error("Submit failed");
-        return res.json();
-      })
-      .then(function (data) {
-        if (!data.ok) throw new Error(data.reason || "Submit failed");
-        if (typeof gtag === "function") {
-          gtag("event", "listing_submitted", { form: "stage2_listing_form" });
-        }
-        if (typeof fbq === "function") {
-          fbq("trackCustom", "ListingSubmitted");
-        }
-        window.location.href = "listing-thankyou.html";
-      })
-      .catch(function () {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", WORKER_BASE_URL + "/submit-listing");
+
+    xhr.upload.onprogress = function (ev) {
+      if (!ev.lengthComputable) return;
+      var pct = Math.round((ev.loaded / ev.total) * 100);
+      if (progressBar) progressBar.style.width = pct + "%";
+      if (progressPct) progressPct.textContent = pct + "%";
+      if (pct < 100) {
+        submitBtn.textContent = "Uploading " + pct + "%…";
+      } else {
+        submitBtn.textContent = "Processing…";
+        if (progressMsg) progressMsg.textContent = "Files uploaded — finalising your submission…";
+        if (progressPct) progressPct.textContent = "Done";
+      }
+    };
+
+    xhr.onload = function () {
+      progressWrap.style.display = "none";
+      var data;
+      try {
+        data = JSON.parse(xhr.responseText);
+      } catch (err) {
+        data = {};
+      }
+      if (xhr.status < 200 || xhr.status >= 300 || !data.ok) {
         submitBtn.disabled = false;
         submitBtn.textContent = "Submit Listing for Verification";
         statusEl.className = "form-status failure";
         statusEl.textContent = "Something went wrong. Please try again in a moment.";
-      });
+        return;
+      }
+      if (typeof gtag === "function") {
+        gtag("event", "listing_submitted", { form: "stage2_listing_form" });
+      }
+      if (typeof fbq === "function") {
+        fbq("trackCustom", "ListingSubmitted");
+      }
+      window.location.href = "listing-thankyou.html";
+    };
+
+    xhr.onerror = function () {
+      progressWrap.style.display = "none";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Listing for Verification";
+      statusEl.className = "form-status failure";
+      statusEl.textContent = "Something went wrong. Please try again in a moment.";
+    };
+
+    xhr.send(formData);
   });
 })();
